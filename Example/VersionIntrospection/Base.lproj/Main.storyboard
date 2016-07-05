@@ -35,7 +35,7 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
-                <customObject id="Zad-5j-fPl" customClass="VersionTableDataSource"/>
+                <customObject id="Zad-5j-fPl" customClass="SPVIVersionTableDataSource"/>
             </objects>
         </scene>
     </scenes>

@@ -1,14 +1,14 @@
 //
-//  DependencyInformation.m
+//  SPVIDependencyInformation.m
 //  Pods
 //
 //  Created by Claus Weymann on 16/06/15.
 //
 //
 
-#import "DependencyInformation.h"
+#import "SPVIDependencyInformation.h"
 
-@implementation DependencyInformation
+@implementation SPVIDependencyInformation
 - (instancetype)init
 {
     self = [super init];
@@ -18,9 +18,9 @@
     return self;
 }
 
--(NSComparisonResult)compare:(DependencyInformation *)dependencyInformation
+-(NSComparisonResult)compare:(SPVIDependencyInformation *)dependencyInformation
 {
-    if([dependencyInformation isKindOfClass:[DependencyInformation class]])
+    if([dependencyInformation isKindOfClass:[SPVIDependencyInformation class]])
     {
         if(self.order == dependencyInformation.order)
         {
