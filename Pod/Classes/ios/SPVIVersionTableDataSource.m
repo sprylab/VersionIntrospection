@@ -1,31 +1,31 @@
 //
-//  VersionTableDataSource.m
+//  SPVIVersionTableDataSource.m
 //  Pods
 //
 //  Created by Claus Weymann on 15/06/15.
 //
 //
 
-#import "VersionTableDataSource.h"
-#import "VersionIntrospection.h"
-#import "DependencyInformation.h"
+#import "SPVIVersionTableDataSource.h"
+#import "SPVIVersionIntrospection.h"
+#import "SPVIDependencyInformation.h"
 
 #import <TSMarkdownParser/TSMarkdownParser.h>
 
-NSString *kSectionKey_title = @"versionIntrospectionSectionTitle";
-NSString *kSectionTitle_version = @"versionIntrospectionSectionTitleVersions";
-NSString *kSectionTitle_license = @"versionIntrospectionSectionTitleLicenses";
-NSString *kSectionKey_data = @"versionIntrospectionSectionData";
-NSString *kVersionIntrospection_VersionCell = @"versionIntrospectionVersionCell";
-NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell";
+NSString *kSPVIVersionIntrospectionSectionKey_title = @"versionIntrospectionSectionTitle";
+NSString *kSPVIVersionIntrospectionSectionTitle_version = @"versionIntrospectionSectionTitleVersions";
+NSString *kSPVIVersionIntrospectionSectionTitle_license = @"versionIntrospectionSectionTitleLicenses";
+NSString *kSPVIVersionIntrospectionSectionKey_data = @"versionIntrospectionSectionData";
+NSString *kSPVIVersionIntrospection_VersionCell = @"versionIntrospectionVersionCell";
+NSString *kSPVIVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell";
 
-@interface VersionTableDataSource()
+@interface SPVIVersionTableDataSource()
 
 @property (nonatomic,strong) NSMutableArray* sortedDataSource;
 
 @end
 
-@implementation VersionTableDataSource
+@implementation SPVIVersionTableDataSource
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -40,16 +40,16 @@ NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell"
 {
     UITableViewCell *cell;
     
-    [tableView registerNib:[UINib nibWithNibName:@"VersionTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kVersionIntrospection_VersionCell];
-    [tableView registerNib:[UINib nibWithNibName:@"LicenseTableViewCell" bundle:[NSBundle mainBundle]]forCellReuseIdentifier:kVersionIntrospection_LicenseCell];
+    [tableView registerNib:[UINib nibWithNibName:@"VersionTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:kSPVIVersionIntrospection_VersionCell];
+    [tableView registerNib:[UINib nibWithNibName:@"LicenseTableViewCell" bundle:[NSBundle mainBundle]]forCellReuseIdentifier:kSPVIVersionIntrospection_LicenseCell];
     
     id dataItem = [self dataItemAtIndexPath:indexPath];
     
-    if ([dataItem isKindOfClass: [DependencyInformation class]]) {
-        DependencyInformation* dependencyInfo = (DependencyInformation*)dataItem;
-        cell = [tableView dequeueReusableCellWithIdentifier:kVersionIntrospection_VersionCell forIndexPath:indexPath];
+    if ([dataItem isKindOfClass: [SPVIDependencyInformation class]]) {
+        SPVIDependencyInformation* dependencyInfo = (SPVIDependencyInformation*)dataItem;
+        cell = [tableView dequeueReusableCellWithIdentifier:kSPVIVersionIntrospection_VersionCell forIndexPath:indexPath];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kVersionIntrospection_VersionCell];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSPVIVersionIntrospection_VersionCell];
         }
         ((UILabel*)[cell viewWithTag:10]).text = dependencyInfo.name;
         ((UILabel*)[cell viewWithTag:11]).text = dependencyInfo.version;
@@ -58,9 +58,9 @@ NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell"
     else
     {
         if ([dataItem isKindOfClass:[NSAttributedString class]]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:kVersionIntrospection_LicenseCell forIndexPath:indexPath];
+            cell = [tableView dequeueReusableCellWithIdentifier:kSPVIVersionIntrospection_LicenseCell forIndexPath:indexPath];
             if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kVersionIntrospection_LicenseCell];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kSPVIVersionIntrospection_LicenseCell];
             }
             ((UITextView*)[cell viewWithTag:20]).attributedText = dataItem;
         }
@@ -78,12 +78,12 @@ NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell"
 
 -(NSArray*)arrayForSection:(NSInteger)section
 {
-    return self.dataSource[section][kSectionKey_data];
+    return self.dataSource[section][kSPVIVersionIntrospectionSectionKey_data];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return self.dataSource[section][kSectionKey_title];
+    return self.dataSource[section][kSPVIVersionIntrospectionSectionKey_title];
 }
 
 -(NSMutableArray *)sortedDataSource
@@ -93,9 +93,9 @@ NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell"
         _sortedDataSource = [NSMutableArray array];
         NSArray* sortedValues;
        
-        sortedValues = [[[VersionIntrospection sharedIntrospection].versionInformation allValues] sortedArrayUsingSelector:@selector(compare:)];
+        sortedValues = [[[SPVIVersionIntrospection sharedIntrospection].versionInformation allValues] sortedArrayUsingSelector:@selector(compare:)];
         
-        for (DependencyInformation* info in sortedValues) {
+        for (SPVIDependencyInformation* info in sortedValues) {
             [_sortedDataSource addObject:info];
         }
     }
@@ -152,19 +152,19 @@ NSString *kVersionIntrospection_LicenseCell = @"versionIntrospectionLicenseCell"
     NSMutableArray* datasource = [NSMutableArray array];
     if(self.licenseMarkdown.length > 0)
     {
-        [datasource addObject:@{kSectionKey_title:kSectionTitle_license,kSectionKey_data:@[self.licenseMarkdown]}];
+        [datasource addObject:@{kSPVIVersionIntrospectionSectionKey_title:kSPVIVersionIntrospectionSectionTitle_license,kSPVIVersionIntrospectionSectionKey_data:@[self.licenseMarkdown]}];
     }
-    [datasource addObject:@{kSectionKey_title:kSectionTitle_version,kSectionKey_data:self.sortedDataSource}];
+    [datasource addObject:@{kSPVIVersionIntrospectionSectionKey_title:kSPVIVersionIntrospectionSectionTitle_version,kSPVIVersionIntrospectionSectionKey_data:self.sortedDataSource}];
     return datasource;
 }
 
 -(void)setExplicitDependencyOrder:(NSDictionary *)explicitDependencyOrder
 {
-    [VersionIntrospection sharedIntrospection].explicitDependencyOrder = explicitDependencyOrder;
+    [SPVIVersionIntrospection sharedIntrospection].explicitDependencyOrder = explicitDependencyOrder;
 }
 
 -(NSDictionary *)explicitDependencyOrder
 {
-    return [VersionIntrospection sharedIntrospection].explicitDependencyOrder;
+    return [SPVIVersionIntrospection sharedIntrospection].explicitDependencyOrder;
 }
 @end

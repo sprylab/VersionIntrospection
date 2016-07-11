@@ -1,5 +1,5 @@
 //
-//  VersionIntrospection.h
+//  SPVIVersionIntrospection.h
 //  Pods
 //
 //  Created by Claus Weymann on 21/04/15.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface VersionIntrospection : NSObject
+@interface SPVIVersionIntrospection : NSObject
 
 @property (nonatomic, strong, readonly) NSMutableDictionary* versionsForDependency;
 @property (nonatomic, strong, readonly) NSMutableDictionary* checksumForDependency;
@@ -18,6 +18,6 @@
 
 @property (nonatomic, strong) NSDictionary* explicitDependencyOrder;
 
-+ (VersionIntrospection*) sharedIntrospection;
++ (SPVIVersionIntrospection*) sharedIntrospection;
 
 @end

@@ -1,15 +1,15 @@
 //
-//  VersionIntrospection.m
+//  SPVIVersionIntrospection.m
 //  Pods
 //
 //  Created by Claus Weymann on 21/04/15.
 //
 //
 
-#import "VersionIntrospection.h"
-#import "DependencyInformation.h"
+#import "SPVIVersionIntrospection.h"
+#import "SPVIDependencyInformation.h"
 
-@interface VersionIntrospection()
+@interface SPVIVersionIntrospection()
 
 @property (nonatomic,strong) NSString* podfileLockContent;
 @property (nonatomic,strong) NSString* devpodGitHashes;
@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSDictionary* acknowledgements;
 @end
 
-@implementation VersionIntrospection
+@implementation SPVIVersionIntrospection
 
 @synthesize versionsForDependency = _versionsForDependency;
 @synthesize checksumForDependency = _checksumForDependency;
@@ -42,8 +42,8 @@
     return _checksumForDependency;
 }
 
-+ (VersionIntrospection*) sharedIntrospection {
-    static VersionIntrospection* sharedInstance = nil;
++ (SPVIVersionIntrospection*) sharedIntrospection {
+    static SPVIVersionIntrospection* sharedInstance = nil;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
@@ -274,9 +274,9 @@
         _versionInformation = [NSMutableDictionary dictionary];
         
         for (NSString* dependency in [self.versionsForDependency allKeys]) {
-            DependencyInformation* dependencyInfo = _versionInformation[dependency];
+            SPVIDependencyInformation* dependencyInfo = _versionInformation[dependency];
             if (!dependencyInfo) {
-                dependencyInfo = [[DependencyInformation alloc] init];
+                dependencyInfo = [[SPVIDependencyInformation alloc] init];
                 dependencyInfo.name = dependency;
                 _versionInformation[dependency] = dependencyInfo;
             }
@@ -284,9 +284,9 @@
         }
         
         for (NSString* dependency in [self.checksumForDependency allKeys]) {
-            DependencyInformation* dependencyInfo = _versionInformation[dependency];
+            SPVIDependencyInformation* dependencyInfo = _versionInformation[dependency];
             if (!dependencyInfo) {
-                dependencyInfo = [[DependencyInformation alloc] init];
+                dependencyInfo = [[SPVIDependencyInformation alloc] init];
                 dependencyInfo.name = dependency;
                 _versionInformation[dependency] = dependencyInfo;
             }
@@ -294,13 +294,13 @@
         }
         
         for (NSString* dependency in [self.explicitDependencyOrder allKeys]) {
-            DependencyInformation* dependencyInfo = _versionInformation[dependency];
+            SPVIDependencyInformation* dependencyInfo = _versionInformation[dependency];
             if (dependencyInfo) {
                 dependencyInfo.order = [self.explicitDependencyOrder[dependency] unsignedIntegerValue];
             }
         }
         
-        DependencyInformation* appInfo = [DependencyInformation new];
+        SPVIDependencyInformation* appInfo = [SPVIDependencyInformation new];
         appInfo.name = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"];
         appInfo.version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         appInfo.order = 0;
