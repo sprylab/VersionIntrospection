@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name             = "VersionIntrospection"
-	s.version          = "0.4.0-dev"
+	s.version          = "0.4.0"
 	s.summary          = "Simple tool to expose versions of dependencies by parsing Podfile.lock"
 	s.homepage         = "https://github.com/sprylab/VersionIntrospection"
 	s.license          = 'MIT'
